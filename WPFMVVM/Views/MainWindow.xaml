@@ -1,0 +1,93 @@
+﻿<Window x:Class="WPFMVVM.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFMVVM"
+        xmlns:vm="clr-namespace:WPFMVVM.ViewModels"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="DefaultButtonStyle">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Height" Value="Auto   "/>  
+        </Style>
+        <vm:PersonViewModel x:Key="PersonViewModel"/>
+    </Window.Resources>
+    <Grid ShowGridLines="True">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="ID:" Grid.Row="0" Grid.Column="0" Margin="10"/>
+        <TextBox Text="{Binding Person.Id,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1"  Margin="7,7,473,14" />
+        <Label Content="Enter your First Name:" Grid.Row="1" Grid.Column="0" Margin="10"/>
+        <TextBox Text="{Binding Person.Fname,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Margin="7,7,473,14" />
+        <Label Content="Enter your Last Name:" Grid.Row="2" Grid.Column="0" Margin="10"/>
+        <TextBox Text="{Binding Person.Lname,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" Margin="7,7,473,14" />
+        <CheckBox Content="Is Active" IsChecked="{Binding Person.IsActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" Margin="10"/>
+        <Button Content="Submit" Command="{Binding AddPersonCommand  }" CommandParameter="{Binding Person.Id}" Grid.Row="3" Width="100" HorizontalAlignment="Left" Grid.Column="1" Margin="10" />
+        <ListView ItemsSource="{Binding Persons ,Mode=TwoWay}" Grid.Row="4" Grid.Column="2">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}" />
+                    <GridViewColumn Header="First Name" Width="120" DisplayMemberBinding="{Binding Fname}" />
+                    <GridViewColumn Header="Last Name" Width="120" DisplayMemberBinding="{Binding Lname}" />
+                    <GridViewColumn Header="Is Active" Width="100" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsActive, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Actions" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Delete" Command="{Binding DataContext.DeletePersonCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <!--<GridViewColumn Header="Image" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="/Images/candy-corn.png" Width="50" Height="50"/>
+                            </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                    </GridViewColumn>-->
+                                    
+                   
+                </GridView>
+            </ListView.View>
+        </ListView>
+<DataGrid ItemsSource="{Binding Persons}" AutoGenerateColumns="False" Grid.Row="5" Grid.Column="1">
+            <DataGrid.Columns >
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="First Name" Binding="{Binding Fname}" />
+                <DataGridTextColumn Header="Last Name" Binding="{Binding Lname}" />
+                <DataGridCheckBoxColumn Header="Is Active" Binding="{Binding IsActive}" />
+                <DataGridTemplateColumn Header="Actions">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Delete" Command="{Binding DataContext.DeletePersonCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns> 
+
+        </DataGrid>
+    </Grid>
+</Window>
