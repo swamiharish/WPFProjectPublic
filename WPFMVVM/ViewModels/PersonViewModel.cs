@@ -58,7 +58,7 @@ namespace WPFMVVM.ViewModels
             Person.Id = Persons.Count + 1;
             Person.Fname = string.Empty;
             Person.Lname = string.Empty;
-            OnPropertyChanged("Person");
+            OnPropertyChanged("Person");// Add comments
 
 
         }  
