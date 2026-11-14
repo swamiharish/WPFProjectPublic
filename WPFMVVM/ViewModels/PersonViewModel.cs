@@ -41,7 +41,7 @@ namespace WPFMVVM.ViewModels
         }
         public PersonViewModel()
         {
-            Person = new Person() { Id = 1, Fname = "Harish", Lname = "Swami" };
+            Person = new Person() { Id = 1, Fname = "Harish", Lname = "Swami", Age = 30 };
             Persons = new ObservableCollection<Person>();
             AddPersonCommand = new RelayCommand(addPerson, canAddPerson);
             DeletePersonCommand = new RelayCommand(deletePerson, canDeletePerson);
@@ -54,10 +54,12 @@ namespace WPFMVVM.ViewModels
         }
         private void addPerson(object ? parameter)
             {
-            Persons.Add(new Person() { Id = Person.Id, Fname = Person.Fname, Lname = Person.Lname, IsActive = Person.IsActive });
+            Persons.Add(new Person() { Id = Person.Id, Fname = Person.Fname, Lname = Person.Lname, IsActive = Person.IsActive, Age = Person.Age });
             Person.Id = Persons.Count + 1;
             Person.Fname = string.Empty;
             Person.Lname = string.Empty;
+            Person.IsActive = false;
+            Person.Age = 0;
             OnPropertyChanged("Person");// Add comments
 
 
