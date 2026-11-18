@@ -29,6 +29,7 @@ namespace WPFRevised
             services.AddSingleton<StylesTriggers>();
             services.AddSingleton<ResourceStyles>();
             services.AddSingleton<IcommandEx>();
+            services.AddSingleton<DropDownEx>();
             _serviceProvider = services.BuildServiceProvider();
 
 
@@ -41,7 +42,7 @@ namespace WPFRevised
             //ResourceStyles   mainWindow = new ResourceStyles()
             // StylesTriggers mainWindow = new StylesTriggers();
 
-            IcommandEx mainWindow = _serviceProvider.GetService<IcommandEx>();
+            DropDownEx mainWindow = _serviceProvider.GetService<DropDownEx>();
            // Template mainWindow = new Template();
 
             mainWindow.Show();      

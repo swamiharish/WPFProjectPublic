@@ -5,9 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFMVVM"
         xmlns:vm="clr-namespace:WPFMVVM.ViewModels"
+        xmlns:conv="clr-namespace:WPFMVVM.Convertor"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
+        <conv:AgeToImage x:Key="AgeToImageConverter"/>
         <Style TargetType="Button" x:Key="DefaultButtonStyle">
             <Setter Property="Width" Value="100"/>
             <Setter Property="Height" Value="30"/>
@@ -26,6 +28,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -39,14 +42,17 @@
         <TextBox Text="{Binding Person.Fname,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Margin="7,7,473,14" />
         <Label Content="Enter your Last Name:" Grid.Row="2" Grid.Column="0" Margin="10"/>
         <TextBox Text="{Binding Person.Lname,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" Margin="7,7,473,14" />
-        <CheckBox Content="Is Active" IsChecked="{Binding Person.IsActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" Margin="10"/>
-        <Button Content="Submit" Command="{Binding AddPersonCommand  }" CommandParameter="{Binding Person.Id}" Grid.Row="3" Width="100" HorizontalAlignment="Left" Grid.Column="1" Margin="10" />
-        <ListView ItemsSource="{Binding Persons ,Mode=TwoWay}" Grid.Row="4" Grid.Column="2">
+        <Label Content="Enter your Age:" Grid.Row="3" Grid.Column="0" Margin="10"/>
+        <TextBox Text="{Binding Person.Age,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" Margin="7,7,473,14" />
+        <CheckBox Content="Is Active" IsChecked="{Binding Person.IsActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" Margin="10"/>
+        <Button Content="Submit" Command="{Binding AddPersonCommand  }" CommandParameter="{Binding Person.Id}" Grid.Row="4" Width="100" HorizontalAlignment="Left" Grid.Column="1" Margin="10" />
+        <ListView ItemsSource="{Binding Persons ,Mode=TwoWay}" Grid.Row="5" Grid.Column="2">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}" />
                     <GridViewColumn Header="First Name" Width="120" DisplayMemberBinding="{Binding Fname}" />
                     <GridViewColumn Header="Last Name" Width="120" DisplayMemberBinding="{Binding Lname}" />
+                    <GridViewColumn Header="Age" Width="50" DisplayMemberBinding="{Binding Age}" />
                     <GridViewColumn Header="Is Active" Width="100" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -73,14 +79,22 @@
                 </GridView>
             </ListView.View>
         </ListView>
-<DataGrid ItemsSource="{Binding Persons}" AutoGenerateColumns="False" Grid.Row="5" Grid.Column="1">
+<DataGrid ItemsSource="{Binding Persons}" AutoGenerateColumns="False" Grid.Row="6" Grid.Column="1">
             <DataGrid.Columns >
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="First Name" Binding="{Binding Fname}" />
                 <DataGridTextColumn Header="Last Name" Binding="{Binding Lname}" />
                 <DataGridCheckBoxColumn Header="Is Active" Binding="{Binding IsActive}" />
-                <DataGridTemplateColumn Header="Actions">
+                <DataGridTemplateColumn Header="Image">
                     <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Age, Converter={StaticResource AgeToImageConverter}}" Width="50" Height="50"/>
+                            <!--<Image Source="/Images/adult.png" Width="50" Height="50"/>-->
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Actions">
+                    <DataGridTemplateColumn.CellTemplate> 
                         <DataTemplate>
                             <Button Content="Delete" Command="{Binding DataContext.DeletePersonCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" />
                         </DataTemplate>
